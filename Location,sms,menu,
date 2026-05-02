@@ -1,0 +1,515 @@
+________________________________________________*LOCATION*_________________________________________________________
+AndroidManifest.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Location"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCFSGQdjFJ9tilySMXDDbOd7Cho3JFWg5Q" />
+
+    </application>
+
+</manifest>
+
+Activity_main.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://sc1hemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/id_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+</RelativeLayout>
+
+Build.gradle.kts(module:app)
+dependencies {
+
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+}
+
+MainActivity.java File:
+package com.asha.location;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private GoogleMap mMap;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        SupportMapFragment mapFragment = (SupportMapFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.id_map);
+        mapFragment.getMapAsync(this);
+    }
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        LatLng location=new LatLng(12.9364 , 77.5782 );
+        // co-ordinates of surana college 12.9364° N, 77.5782° E
+        googleMap.addMarker(new MarkerOptions().position(location).title("Surana College"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,12));
+    }
+}
+
+
+_______________________________________________________________*SMS*_______________________________________________
+
+Androidmanifest.xml File:
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SMS"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+Activity_main.xml File:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/pink"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Phone Number"
+        android:inputType="phone"/>
+
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Message"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"/>
+
+    <Button
+        android:id="@+id/sendSMS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send SMS"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
+
+MainActivity.java File:
+
+package com.asha.sms;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText phoneNumber, message;
+    Button sendSMS;
+    private static final int SMS_PERMISSION_CODE = 101;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize UI components
+        phoneNumber = findViewById(R.id.phoneNumber);
+        message = findViewById(R.id.message);
+        sendSMS = findViewById(R.id.sendSMS);
+
+        // Button click listener
+        sendSMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkSmsPermission()) {
+                    sendSms();
+                } else {
+                    requestSmsPermission();
+                }
+            }
+        });
+    }
+
+    // Method to send SMS with validation
+    private void sendSms() {
+        String number = phoneNumber.getText().toString().trim();
+        String msg = message.getText().toString().trim();
+
+        // Validate phone number
+        if (number.isEmpty()) {
+            Toast.makeText(this, "Please enter a phone number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!number.matches("\\d{10}")) {
+            Toast.makeText(this, "Enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validate message content
+        if (msg.isEmpty()) {
+            Toast.makeText(this, "Please enter a message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(number, null, msg, null, null);
+            Toast.makeText(this, "SMS Sent Successfully!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "SMS Sending Failed!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    // Check SMS permission
+    private boolean checkSmsPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // Request SMS permission
+    private void requestSmsPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
+    }
+
+    // Handle permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == SMS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sendSms();
+            } else {
+                Toast.makeText(this, "Permission Denied! Cannot send SMS.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+}
+
+
+__________________________________________________*MENU* ________________________________________________________
+
+Manifest.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Program6"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+MainActivity.java File:
+package com.ashakanoj.program6;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
+import androidx.appcompat.widget.PopupMenu;
+
+import static android.os.Build.VERSION_CODES.N;
+
+
+public class MainActivity extends AppCompatActivity implements
+        PopupMenu.OnMenuItemClickListener{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //Registering for Context Menu
+        registerForContextMenu((TextView) findViewById(R.id.t1));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int mid = item.getItemId();
+        if (mid == R.id.i1) {
+            Toast.makeText(this, "Clicked Option Menu",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i2) {
+            Toast.makeText(this, "I am Sub-menu 1",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i3) {
+            Toast.makeText(this, "I am Sub-menu 2",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.menu_main, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int mid = item.getItemId();
+        if (mid == R.id.i1) {
+            Toast.makeText(this, "Clicked Context Menu",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i2) {
+            Toast.makeText(this, "I am Sub-menu 1",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i3) {
+            Toast.makeText(this, "I am Sub-menu 2",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return super.onContextItemSelected(item);
+    }
+    public void pop(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.menu_main, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);  
+        popup.show();
+    }
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        int mid = item.getItemId();
+        if (mid == R.id.i1) {
+            Toast.makeText(this, "Clicked Popup Menu",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i2) {
+            Toast.makeText(this, "I am Sub-menu 1",
+                    Toast.LENGTH_SHORT).show();
+        } else if (mid == R.id.i3) {
+            Toast.makeText(this, "I am Sub-menu 2",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return true;
+
+    }
+}
+
+activity_main.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:background="@color/skyblue"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/t1"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="I am Context Menu"
+        android:textColor="@color/design_default_color_background"
+        android:background="@color/yellowgreen"
+        android:paddingBottom="20dp"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:onClick="pop"
+        android:text="I am Pop Menu"
+        android:textColor="@color/design_default_color_background"
+        android:paddingBottom="20dp"
+        android:background="@color/yellowgreen"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:textAllCaps="true"
+        />
+</LinearLayout>
+
+menu_main.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/i1"
+        android:title="Click me to see Sub-menu Item"
+        android:icon="@drawable/baseline_back_hand_24" >
+        <!-- "item" submenu -->
+        <menu>
+            <item android:id="@+id/i2"
+                android:title="Submenuitem 1"
+                android:icon="@drawable/baseline_add_circle_24"
+                />
+            <item android:id="@+id/i3"
+                android:title="Submenuitem 2"
+                android:icon="@drawable/baseline_bluetooth_searching_24" />
+        </menu>
+    </item>
+</menu>
+
+Values: dimen.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_vertical_margin">100dp</dimen>"
+    <dimen name="activity_horizontal_margin">100dp</dimen>
+</resources>
+
+Values: colors.xml File:
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#008000</color>
+    <color name="yellowgreen">#9ACD32</color>
+    <color name="blue">#0000FF</color>
+    <color name="red">#FF0000</color>
+    <color name="skyblue">#87CEEB</color>
+</resources>
+
+Values: string.xml File:
+<resources>
+    <string name="app_name">Program6</string>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/design_default_color_primary_variant</item>
+        <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+        <item name="colorAccent">@color/design_default_color_secondary_variant</item>
+    </style>
+</resources>
+
+Themes: themes.xml File:
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Program6" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="android:colorBackground">@color/green</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Program6" parent="Base.Theme.Program6" />
+</resources>

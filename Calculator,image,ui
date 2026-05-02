@@ -1,0 +1,525 @@
+Activity_main.xml File:
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/aqua"
+    tools:context="MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple Calculator"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/num1EditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="44dp"
+        android:hint="Enter number 1"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/num2EditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:hint="Enter number 2"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num1EditText" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="+"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num2EditText" />
+
+    <Button
+        android:id="@+id/subtractButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="-"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/multiplyButton"
+        app:layout_constraintStart_toEndOf="@+id/addButton"
+        app:layout_constraintTop_toBottomOf="@+id/num2EditText" />
+
+    <Button
+        android:id="@+id/multiplyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="x"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num2EditText" />
+
+    <Button
+        android:id="@+id/divideButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="/"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addButton" />
+
+    <Button
+        android:id="@+id/sqrtButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="140dp"
+        android:text="Sqrt"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtractButton" />
+
+    <TextView
+        android:id="@+id/resultTextView"
+        android:layout_width="84dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:text="RESULT: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divideButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+MainActivity.java File:
+
+package com.asha.calculator;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+
+import com.asha.calculator.R;
+
+import java.text.DecimalFormat;
+
+public class MainActivity extends AppCompatActivity {
+
+    // Declare variables to hold references to UI elements
+    private EditText num1EditText, num2EditText;
+    private TextView resultTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize UI elements from the layout
+        num1EditText = findViewById(R.id.num1EditText);
+        num2EditText = findViewById(R.id.num2EditText);
+        resultTextView = findViewById(R.id.resultTextView);
+
+        // Set click listeners for arithmetic operation buttons
+
+        Button addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation('+');
+            }
+        });
+
+        Button subtractButton = findViewById(R.id.subtractButton);
+        subtractButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation('-');
+            }
+        });
+
+        Button multiplyButton = findViewById(R.id.multiplyButton);
+        multiplyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation('*');
+            }
+        });
+
+        Button divideButton = findViewById(R.id.divideButton);
+        divideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation('/');
+            }
+        });
+
+        Button sqrtButton = findViewById(R.id.sqrtButton);
+        sqrtButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateSquareRoot();
+            }
+        });
+    }
+
+    private void performCalculation(char operator) {
+        // Get the values entered in the input fields
+        String num1Str = num1EditText.getText().toString();
+        String num2Str = num2EditText.getText().toString();
+
+        // Check if either input field is empty
+        if (num1Str.isEmpty() || num2Str.isEmpty()) {
+            Toast.makeText(this, "Please enter both numbers", Toast.LENGTH_SHORT).show();
+            return; // Exit the method to prevent calculations with empty inputs
+        }
+
+        // Convert the input values to numeric format
+        double num1 = Double.parseDouble(num1Str);
+        double num2 = Double.parseDouble(num2Str);
+        double result = 0;
+
+        // Perform the selected calculation based on the operator
+        switch (operator) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                if (num2 != 0) {
+                    result = num1 / num2;
+                } else {
+                    Toast.makeText(this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+                    return; // Exit the method if division by zero is attempted
+                }
+                break;
+        }
+
+        // Format and display the calculation result
+        DecimalFormat df = new DecimalFormat("#.##");
+        resultTextView.setText("Result: " + df.format(result));
+    }
+
+    private void calculateSquareRoot() {
+        String num1Str = num1EditText.getText().toString();
+        // Check if the input field is empty
+        if (num1Str.isEmpty()) {
+            Toast.makeText(this, "Please enter a number", Toast.LENGTH_SHORT).show();
+            return; // Exit the method to prevent calculations with empty inputs
+        }
+
+        double num = Double.parseDouble(num1Str);
+        double sqrtResult = Math.sqrt(num);
+        DecimalFormat df = new DecimalFormat("#.##");
+        resultTextView.setText("Square Root: " + df.format(sqrtResult));
+    }
+}
+
+
+______________________________________________*TWO IMAGE*____________________________________________________________
+Activity_main.xml File:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click on Image"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/img"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="20dp"/>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/img_1"
+        android:scaleType="centerCrop"/>
+</LinearLayout>
+
+MainActivity.java File:
+
+package com.asha.imageview;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Reference ImageViews from the layout
+        ImageView imageView1 = findViewById(R.id.imageView1);
+        ImageView imageView2 = findViewById(R.id.imageView2);
+
+        // Set images from drawable resources
+        imageView1.setImageResource(R.drawable.img);
+        imageView2.setImageResource(R.drawable.img_1);
+
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Cat", Toast.LENGTH_LONG).show();
+            }
+        });
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Flower", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+}
+
+
+
+______________________________________________*UI ALL VIEWS*____________________________________________________________
+
+activity_main.xml file:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_verticle_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_verticle_margin">
+
+
+<TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello Students!!" />
+
+    <Button
+        android:id="@+id/buttonExample"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Example Button" />
+
+    <CheckBox
+        android:id="@+id/checkBoxExample"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CheckBox Example" />
+
+    <ToggleButton
+        android:id="@+id/toggleButtonExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton Example" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radioBtton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="RadioButton 1" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton 2" />
+
+       
+
+
+
+ <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton 3" />
+    </RadioGroup>
+
+    <ImageButton
+        android:id="@+id/imageButtonExample"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_airline_seat_recline_normal_24" />
+
+</LinearLayout>
+
+Main.xml file:
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+</menu>
+
+dimen.xml file:
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_verticle_margin">100dp</dimen>"
+    <dimen name="activity_horizontal_margin">100dp</dimen>
+</resources>
+
+MainActivity.java File:
+package com.ashakanoj.program4;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Button example = (Button) findViewById(R.id.buttonExample);
+      
+
+
+  CheckBox exampleCheckBox = (CheckBox) findViewById(R.id.checkBoxExample);
+        RadioGroup exampleRadioGroup = (RadioGroup) findViewById(R.id.radioGroupExample);
+        ToggleButton exampletoggleButton = (ToggleButton) findViewById(R.id.toggleButtonExample);
+        ImageButton exampleImageButton = (ImageButton) findViewById(R.id.imageButtonExample);
+
+        example.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+
+                // Toast.makeText(this, "Hey Button is pressed !!",
+                // Toast.LENGTH_SHORT).show();
+                ToastToDisplay("Hey Button is pressed!!");
+            }
+        });
+        exampleCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if (((CheckBox) v).isChecked()) {
+                    ToastToDisplay("Check Box is checked");
+                } else {
+                    ToastToDisplay("Check box is unchecked");
+                }
+            }
+        });
+        exampleRadioGroup
+                .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        // TODO Auto-generated method stub
+                        RadioButton rb1 = (RadioButton) findViewById(R.id.radioBtton1);
+                        RadioButton rb2 = (RadioButton) findViewById(R.id.radioButton2);
+                        if (rb1.isChecked()) {
+                            ToastToDisplay("Radio Button 1 is checked");
+                        } else if (rb2.isChecked()) {
+                            ToastToDisplay("Radio Button 2 is checked");
+                        } else {
+                            ToastToDisplay("Radio Button 3 is checked");
+                        }
+                    }
+                });
+        exampletoggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if (((ToggleButton) v).isChecked()) {
+                    ToastToDisplay("Toggle button is ON");
+                } else {
+                    ToastToDisplay("Toggle Button is OFF");
+                }
+            }
+        });
+
+        exampleImageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                ToastToDisplay("Image Button is pressed");
+            }
+        });
+    }
+
+
+    private void ToastToDisplay(String args) {
+        Toast.makeText(getBaseContext(), args, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+}
